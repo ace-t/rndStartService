@@ -1,0 +1,10 @@
+@CHARSET "EUC-KR";
+
+#div1{
+	background:lightblue;
+	position:absolute;
+	top:0;
+	left:0;
+	padding:50px;
+	z-index:10000;
+}
