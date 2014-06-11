@@ -42,7 +42,7 @@ public class Indexer {
 	
 			config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
 	
-			w = new IndexWriter(index, config); // ÀÎµ¦½º »ı¼º 
+			w = new IndexWriter(index, config); // ì¸ë±ìŠ¤ ìƒì„± 
 		
 			addDoc(w, "Lucene in Action", "193398817");
 			addDoc(w, "Lucene for Dummies", "55320055Z");
@@ -69,7 +69,7 @@ public class Indexer {
 
 	}
 	
-	// »öÀÎ¿¡ Ãß°¡ÇÒ µ¥ÀÌÅÍ Document´ÜÀ§·Î ³Ö¾îÁÖ±â 
+	// ìƒ‰ì¸ì— ì¶”ê°€í•  ë°ì´í„° Documentë‹¨ìœ„ë¡œ ë„£ì–´ì£¼ê¸° 
 	private static void addDoc(IndexWriter w, String title, String isbn) throws IOException {
 		Document doc = new Document();
 		System.out.println("title->"+title+"=== isbn->"+isbn);
@@ -108,9 +108,9 @@ public class Indexer {
 		try {
 			reader = DirectoryReader.open(index);  // index reading
 			searcher = new IndexSearcher(reader);  // Creates a searcher searching the provided index.
-			collector = TopScoreDocCollector.create(hitsPerPage, true); // ¾î¶»°Ô °¡Á®¿Ã °ÍÀÎ°¡? 
-			searcher.search(q, collector); // »öÀÎ¿¡ ´ëÇØ search(), Lower-level search API. return void
-			hits = collector.topDocs().scoreDocs;  // docId¸¦ ²¨³» hits[]¿¡ ³Ö¾îÁØ´Ù. 
+			collector = TopScoreDocCollector.create(hitsPerPage, true); // ì–´ë–»ê²Œ ê°€ì ¸ì˜¬ ê²ƒì¸ê°€? 
+			searcher.search(q, collector); // ìƒ‰ì¸ì— ëŒ€í•´ search(), Lower-level search API. return void
+			hits = collector.topDocs().scoreDocs;  // docIdë¥¼ êº¼ë‚´ hits[]ì— ë„£ì–´ì¤€ë‹¤. 
 			display(hits, searcher);
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
@@ -138,7 +138,7 @@ public class Indexer {
 			System.out.println("docId="+docId);
 			Document d;
 			try {
-				d = searcher.doc(docId);  // return ½ÇÁ¦ ¹®¼­ document object return
+				d = searcher.doc(docId);  // return ì‹¤ì œ ë¬¸ì„œ document object return
 				System.out.println((i + 1) + ". " + d.get("title") + "\t" + d.get("isbn"));
 			} catch (CorruptIndexException e) {
 				// TODO Auto-generated catch block
