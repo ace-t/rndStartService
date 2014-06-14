@@ -24,14 +24,12 @@ public class RndMainController {
 	}
 	
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/search/searchResult.json", method = RequestMethod.POST)
-	public String search(@RequestParam("searchInput") String searchKeyword, Model model) {
+	// Search Result Page
+	@RequestMapping(value = "/search/search.json", method = RequestMethod.GET)
+	public String searchEngine(@RequestParam("searchKeyword") String searchKeyword, Model model) {
 		
-		System.out.println("#######searchResult########"+searchKeyword);
-		logger.info("Welcome searchResult~!!");
+		System.out.println("#######searchKeyword########"+searchKeyword);
+		logger.info("Welcome searchKeyword~!!");
 		
 		
 		//model.addAttribute("serverTime",  );
