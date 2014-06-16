@@ -1,6 +1,6 @@
  
  This is http://acet.pe.kr owner's private project!
 
- have a nice day :D
-
+ Contents : luceneBasicSource01 use RAMDirectory() code!!
+ 
  
