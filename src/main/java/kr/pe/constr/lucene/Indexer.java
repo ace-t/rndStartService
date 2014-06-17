@@ -35,51 +35,6 @@ public class Indexer {
 
 	public Indexer(){}
 	
-	// Step 01. This is basic example, not use anymore!
-	public Indexer(String str){
-
-		IndexWriter w = null;
-		IndexWriterConfig config; 
-
-		try {
-
-			// The same analyzer should be used for indexing and searching
-			//StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_40); 
-			Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_40);
-			// Filters StandardTokenizer with StandardFilter, LowerCaseFilter and StopFilter, using a list of English stop words.
-
-			// 1. create the index
-			index = new RAMDirectory();
-
-			config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
-
-			w = new IndexWriter(index, config); // 인덱스 생성 
-
-			addDoc(w, "Lucene in Action", "193398817");
-			addDoc(w, "Lucene for Dummies", "55320055Z");
-			addDoc(w, "Managing Gigabytes", "55063554A");
-			addDoc(w, "The Art of Computer Science", "9900333X");
-
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			try {      
-				w.close();
-			} catch (CorruptIndexException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-
-	}
-
 	/**
 	 * @author AceT
 	 * @param indexDir
@@ -193,7 +148,7 @@ public class Indexer {
 
 	// 색인에 추가할 데이터 Document단위로 넣어주기 
 	
-	private static void addDoc(IndexWriter w, String title, String isbn) throws IOException {
+	/*private static void addDoc(IndexWriter w, String title, String isbn) throws IOException {
 		Document doc = new Document();
 		System.out.println("title->"+title+"=== isbn->"+isbn);
 		doc.add(new TextField("title", title, Field.Store.YES));
@@ -201,13 +156,13 @@ public class Indexer {
 		// use a string field for isbn because we don't want it tokenized
 		doc.add(new StringField("isbn", isbn, Field.Store.YES));
 		w.addDocument(doc);
-	}
+	}*/
 
 	// step 02.
-	public Query queryExcute(){
+	public Query queryExcute(String querystr){
 		// 2. query
 		//String querystr = "parktaeha";
-		String querystr = "lucene";
+		//String querystr = "lucene";
 		StandardAnalyzer anal = new StandardAnalyzer(Version.LUCENE_40);
 		// the "title" arg specifies the default field to use
 		// when no field is explicitly specified in the query.
