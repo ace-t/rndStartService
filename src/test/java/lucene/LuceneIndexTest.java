@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.Date;
 
+import kr.pe.constr.lucene.ISearch;
 import kr.pe.constr.lucene.Indexer;
+import kr.pe.constr.lucene.Search;
 
 import org.apache.lucene.search.Query;
 import org.junit.Before;
@@ -14,7 +16,9 @@ import org.junit.Test;
 public class LuceneIndexTest {
 	File indexDir=null;
 	File dataTargetDir;
-	Indexer idx;
+	Indexer idx = null;
+	ISearch search =null; 
+	Query q = null;
 	
 	@Before
 	public void setUp(){
@@ -25,7 +29,7 @@ public class LuceneIndexTest {
 		idx = new Indexer();
 	}
 
-	//@Test
+	@Test
 	public void makeFileIndexerTest(){
 		System.out.println("Indexing Start!!--");
 		
@@ -44,8 +48,10 @@ public class LuceneIndexTest {
 	public void doSearchTest() {
 		System.out.println("======== start search!! ==========");
 		String queryStr = "lucene";
-		Query q = idx.queryExcute(queryStr);
-		idx.search(q, indexDir);
+		search = new Search();
+		q = search.queryExcute(queryStr);
+		//Query q = idx.queryExcute(queryStr);
+		search.search(q, indexDir);
 		System.out.println("======== end search!! ==========");
 	}
 	

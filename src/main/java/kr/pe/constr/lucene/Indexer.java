@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
@@ -32,6 +33,7 @@ import org.apache.lucene.util.Version;
 
 public class Indexer {
 	private Directory index;
+	private String parsingStr;
 
 	public Indexer(){}
 	
@@ -100,6 +102,11 @@ public class Indexer {
 
 	private void indexFile(IndexWriter iw, File f) {
 		
+		ArrayList<String> arr = new ArrayList<String>();
+		arr.add("<title>");
+		arr.add("<contents>");
+		
+		
 		BufferedReader in=null;
 		// TODO Auto-generated method stub
 		if(f.isHidden() || !f.exists() || !f.canRead()){
@@ -120,12 +127,39 @@ public class Indexer {
 			in = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
 			String target=null;
 			
+			int cnt = 0;
 			while((target = in.readLine()) != null){
-				System.out.println("target:"+target);
-				doc.add(new TextField("acet", target ,Field.Store.YES));  // Field.Store.YES 이녀석이 NO면 색인내용이 없다.  
+				
+				System.out.println(cnt+"target:"+target);
+				String fieldStr = arr.get(cnt);
+				//int check = target.indexOf(fieldStr);
+				System.out.println("#####"+fieldStr);
+				if(target.indexOf(fieldStr) >= 0){
+					
+					//field
+					String parsingField = target.substring(0, fieldStr.length());
+					
+					parsingStr = target.substring(fieldStr.length());
+					
+					System.out.println(parsingField+"arr.size()"+arr.get(0)+"222"+arr.get(1));
+					if(parsingField.equals(arr.get(0))){ // title
+						doc.add(new TextField("title", parsingStr ,Field.Store.YES)); 
+						cnt = 1;
+						
+					}else if(parsingField.equals(arr.get(1))){
+						System.out.println("no match field!!");
+						doc.add(new TextField("contents", parsingStr ,Field.Store.YES)); 
+						cnt = 0;
+					}
+					
+					//System.out.println(parsingField+"parsing "+ parsingStr);
+				}
+				
+				//doc.add(new TextField("acet", target ,Field.Store.YES));  // Field.Store.YES 이녀석이 NO면 색인내용이 없다.  
 																		 // 뜻 그대로 Store 여부, 단 : 2번째 param에 Reader가 들어오게 되면 Field.Store.YES를 사용할 수가 없어서 검색 결과가 나오지 않는다.
 				// doc.add(new StringField("acet", target.toString(),Field.Store.YES));
 				// Test : http://stackoverflow.com/questions/18862600/how-to-use-lucene-indexreader-to-read-index-in-version-4-4?newreg=c276e4f6c07a4ff1ac37b4c9e94f4ed1
+				//
 				
 			}
 
@@ -157,90 +191,6 @@ public class Indexer {
 		doc.add(new StringField("isbn", isbn, Field.Store.YES));
 		w.addDocument(doc);
 	}*/
-
-	// step 02.
-	public Query queryExcute(String querystr){
-		// 2. query
-		//String querystr = "parktaeha";
-		//String querystr = "lucene";
-		StandardAnalyzer anal = new StandardAnalyzer(Version.LUCENE_40);
-		// the "title" arg specifies the default field to use
-		// when no field is explicitly specified in the query.
-		Query q = null;
-		try {
-			q = new QueryParser(Version.LUCENE_40, "acet", anal).parse(querystr);
-			System.out.println("q="+q);
-		} catch (org.apache.lucene.queryparser.classic.ParseException e) {
-			e.printStackTrace();
-		}
-		return q;
-	}
-
-	// step 03.
-	public void search(Query q, File indexDir){
-		// 3. search
-		int hitsPerPage = 10;
-		IndexReader reader = null;
-		ScoreDoc[] hits = null; 
-		IndexSearcher searcher;
-		TopScoreDocCollector collector;
-		try {
-			
-			//FSDirectory index = FSDirectory.open(indexDir);
-			//reader = DirectoryReader.open(index);  // index reading
-			
-			reader = DirectoryReader.open(FSDirectory.open(indexDir));
-			
-			searcher = new IndexSearcher(reader);  // Creates a searcher searching the provided index.
-			collector = TopScoreDocCollector.create(hitsPerPage, true); // 어떻게 가져올 것인가? 
-			searcher.search(q, collector); // 색인에 대해 search(), Lower-level search API. return void
-			hits = collector.topDocs().scoreDocs;  // docId를 꺼내 hits[]에 넣어준다. 
-			display(hits, searcher);
-			
-		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			try {
-				reader.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-
-	}
-
-	private void display(ScoreDoc[] hits, IndexSearcher searcher){
-		// 4. display results
-		System.out.println("Found " + hits.length + " hits.");
-		for (int i = 0; i < hits.length; ++i) {
-			int docId = hits[i].doc;  // return docId number
-			System.out.println("docId="+docId);
-			
-			try {
-				Document d = searcher.doc(docId);  // return 실제 문서 document object return
-				//System.out.println((i + 1) + ". " + d.get("title") + "\t" + d.get("isbn"));
-				System.out.println("result array length :"+d.getValues("acet").length);
-				System.out.println((i + 1) + ". text=>" + d.getValues("acet"));
-				String[] a = d.getValues("acet");
-				for(int aa=0; aa < d.getValues("acet").length; aa++){
-					System.out.println("a[aa]=>"+a[aa]);
-				}
-			} catch (CorruptIndexException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-	}
 
 	
 
