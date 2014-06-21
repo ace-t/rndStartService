@@ -103,6 +103,7 @@ public class Indexer {
 	private void indexFile(IndexWriter iw, File f) {
 		
 		ArrayList<String> arr = new ArrayList<String>();
+		//arr.add("<searchNum>");
 		arr.add("<title>");
 		arr.add("<contents>");
 		

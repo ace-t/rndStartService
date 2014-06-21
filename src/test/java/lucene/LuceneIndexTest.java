@@ -1,6 +1,5 @@
 package lucene;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Date;
@@ -44,7 +43,7 @@ public class LuceneIndexTest {
 		
 	}
 
-    @Test
+    //@Test
 	public void doSearchTest() {
 		System.out.println("======== start search!! ==========");
 		String queryStr = "lucene";

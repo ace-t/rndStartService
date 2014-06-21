@@ -37,7 +37,7 @@
     		<div style="color:#777;font-size:16px;font-weight:bold;position:relative;left:68%;top:70px">ACE-T'S 검색엔진  
     		</div>
     		
-    		<form name="searchForm" id="searchForm" method="get" action="/search/search.json">
+    		<form name="searchForm" id="searchForm" method="get" action="/search.json">
 	 			<div class="span9">
 	 				<div class="span8 offset3">
 	  					<input type="text" id="searchKeyword" name="searchKeyword" class="span12">
@@ -47,11 +47,11 @@
  			</form>   	
  			<div class="span10" align=center>
  			   <p>
- 			   	<button class="btn btn-mini btn-primary" type="button">개발자 박태하</button>
+ 			   <!--  	<button class="btn btn-mini btn-primary" type="button">개발자 박태하</button>
  			   	<button class="btn btn-mini btn-primary" type="button">개발하고 싶은..</button>
  			   	<button class="btn btn-mini btn-primary" type="button">당장 개발하자!</button>
  			   	<button class="btn btn-mini btn-primary" type="button">다음,카카오 합병</button>
- 			   	<button class="btn btn-mini btn-primary" type="button">테크 회사..</button>
+ 			   	<button class="btn btn-mini btn-primary" type="button">테크 회사..</button>-->
  			   </p>
     		</div>	
   		</div>
